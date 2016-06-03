@@ -4,6 +4,9 @@
 
 # Each configuration option enables a list of files.
 
+CFLAGS_hall.o	+= $(DISABLE_LTO)
+CFLAGS_certify_hall.o	+= $(DISABLE_LTO)
+
 obj-$(CONFIG_INPUT)		+= input-core.o
 input-core-y := input.o input-compat.o input-mt.o ff-core.o
 

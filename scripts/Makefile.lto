@@ -15,11 +15,6 @@ ifdef CONFIG_LTO
 # So only allow it with 4.8 for now.
 ifeq ($(call cc-ifversion, -ge, 0408,y),y)
 ifneq ($(call cc-option,${LTO_CFLAGS},n),n)
-# We need HJ Lu's Linux binutils because mainline binutils does not
-# support mixing assembler and LTO code in the same ld -r object.
-# XXX check if the gcc plugin ld is the expected one too
-# XXX some Fedora binutils should also support it. How to check for that?
-ifeq ($(call ld-ifversion,-ge,22710001,y),y)
 
 # gcc 5.0 supports __attribute__((no_reorder)), so we don't
 # need to disable reordering globally, but can only use
@@ -82,9 +77,6 @@ endif
 	LDFINAL := ${CONFIG_SHELL} ${srctree}/scripts/gcc-ld \
                   ${LTO_FINAL_CFLAGS}
 
-else
-        $(warning "WARNING: Too old linker version $(call ld-version) for kernel LTO. You need Linux binutils. CONFIG_LTO disabled.")
-endif
 else
         $(warning "WARNING: Compiler/Linker does not support LTO/WHOPR with linker plugin. CONFIG_LTO disabled.")
 endif
