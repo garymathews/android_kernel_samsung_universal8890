@@ -4,7 +4,7 @@
 MODEL=$1
 
 if [ x$1 = x ]
-then MODEL=hero2lte
+then MODEL=herolte
 fi
 
 VARIANT=xx
@@ -16,7 +16,7 @@ BUILD_ROOT_DIR=$BUILD_KERNEL_DIR/..
 BUILD_KERNEL_OUT_DIR=$BUILD_ROOT_DIR/kernel_out/JESSE_KERNEL_OBJ
 PRODUCT_OUT=$BUILD_ROOT_DIR/kernel_out
 
-BUILD_CROSS_COMPILE=/usr/local/toolchain/bin/aarch64-linux-android-
+BUILD_CROSS_COMPILE=/home/gmathews/aarch64-linaro-6.1/bin/aarch64-linux-android-
 BUILD_JOB_NUMBER=`grep processor /proc/cpuinfo|wc -l`
 
 # Default Python version is 2.7
@@ -128,8 +128,10 @@ FUNC_BUILD_KERNEL()
 	mkdir $BUILD_KERNEL_DIR/output
 	rm $KERNEL_IMG
 	rm $BUILD_KERNEL_OUT_DIR/firmware/apm_8890_evt1.h
+	mkdir -p $BUILD_KERNEL_OUT_DIR/firmware
 	ln -s $BUILD_KERNEL_DIR/firmware/apm_8890_evt1.h $BUILD_KERNEL_OUT_DIR/firmware/apm_8890_evt1.h
 	rm $BUILD_KERNEL_OUT_DIR/init/vmm.elf
+	mkdir -p $BUILD_KERNEL_OUT_DIR/init
 	ln -s $BUILD_KERNEL_DIR/init/vmm.elf $BUILD_KERNEL_OUT_DIR/init/vmm.elf
 
 if [ $MODEL != hero2lte ]
