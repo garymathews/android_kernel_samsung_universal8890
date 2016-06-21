@@ -720,11 +720,9 @@ static void max77854_charger_initialize(struct max77854_charger_data *charger)
 	max77854_write_reg(charger->i2c, MAX77854_CHG_REG_CNFG_01, reg_data);
 
 	/*
-	 * charge current 466mA(default)
-	 * otg current limit 900mA
+	 * charge current 1000mA(default)
 	 */
-	max77854_update_reg(charger->i2c, MAX77854_CHG_REG_CNFG_02,
-			(0x01 << 6), 0xC0);
+	max77854_write_reg(charger->i2c, MAX77854_CHG_REG_CNFG_02, 0xD4);
 
 	/*
 	 * top off current 150mA
@@ -1010,9 +1008,9 @@ static int max77854_chg_set_property(struct power_supply *psy,
 			charger->wc_pre_current = WC_CURRENT_START;
 			wake_unlock(&charger->wpc_wake_lock);
 			cancel_delayed_work(&charger->wpc_work);
-			/* Set CHGIN_LIMIT(500mA) and WCIN_LIMIT(480mA) to default */
+			/* Set CHGIN_LIMIT(1000mA) and WCIN_LIMIT(480mA) to default */
 			max77854_write_reg(charger->i2c,
-				MAX77854_CHG_REG_CNFG_09, 0x0F); // CHGIN_LIMIT
+				MAX77854_CHG_REG_CNFG_09, 0x1E); // CHGIN_LIMIT
 			max77854_write_reg(charger->i2c,
 				MAX77854_CHG_REG_CNFG_10, 0x10); // WCIN_LIMIT
 			max77854_update_reg(charger->i2c,
@@ -2119,7 +2117,7 @@ static void max77854_charger_shutdown(struct device *dev)
 	reg_data = 0x04;
 	max77854_write_reg(charger->i2c,
 		MAX77854_CHG_REG_CNFG_00, reg_data);
-	reg_data = 0x0F;
+	reg_data = 0x1E;
 	max77854_write_reg(charger->i2c,
 		MAX77854_CHG_REG_CNFG_09, reg_data);
 	reg_data = 0x10;
